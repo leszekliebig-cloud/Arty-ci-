@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artyści uliczni na eventy | Spektakle uliczne i pokazy ognia</title>
+<meta name="description" content="Artyści uliczni na eventy, festiwale i wydarzenia specjalne. Tworzymy spektakle uliczne, pokazy ognia i widowiska plenerowe w całej Polsce.">
+<meta name="keywords" content="artyści uliczni, artyści uliczni na event, teatr uliczny, spektakl uliczny, pokazy ognia na event, atrakcje na festiwal, artyści na wydarzenia plenerowe, spektakle plenerowe">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:   #0a0a0a;
+  --deep:    #111111;
+  --card:    #181818;
+  --red:     #c0161a;
+  --red-hot: #e02020;
+  --white:   #ffffff;
+  --off:     #f0f0f0;
+  --grey:    rgba(255,255,255,0.72);
+  --muted:   rgba(255,255,255,0.48);
+  --border:  rgba(255,255,255,0.1);
+  --border-r: rgba(192,22,26,0.35);
+  --serif:   'Playfair Display', Georgia, serif;
+  --sans:    'Inter', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ════════════════════════════════════════
+   NAV
+════════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 5vw;
+  transition: background 0.3s, border-color 0.3s;
+}
+nav.scrolled {
+  background: rgba(10,10,10,0.97);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+/* Logo — uses the actual PNG file */
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo img {
+  height: 54px; width: auto;
+  /* Make white logo visible on dark bg — logo has white text already */
+  filter: brightness(1.1);
+}
+
+.nav-btn {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--white); text-decoration: none;
+  border: 1.5px solid var(--red); padding: 0.65rem 1.6rem;
+  transition: all 0.25s;
+}
+.nav-btn:hover { background: var(--red); border-color: var(--red); }
+
+/* ════════════════════════════════════════
+   HERO
+════════════════════════════════════════ */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 0 6vw 9vh;
+  overflow: hidden;
+}
+
+/* Hero photo background */
+.hero-bg {
+  position: absolute; inset: 0;
+  background: url('preview.webp') center 28% / cover no-repeat;
+  background-color: #1a0505; /* fallback */
+}
+/* Layered overlay for readability — dark left side, subtle red top-left glow */
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(to right,  rgba(5,5,5,0.93) 0%, rgba(5,5,5,0.6) 50%, rgba(5,5,5,0.5) 100%),
+    linear-gradient(to top,    rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.3) 55%, transparent 100%),
+    linear-gradient(135deg,    rgba(140,8,8,0.22) 0%, transparent 40%);
+}
+
+.hero-tag {
+  position: relative; z-index: 2;
+  display: inline-flex; align-items: center; gap: 1rem;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 1.6rem;
+  opacity: 0; animation: up 0.9s ease 0.3s forwards;
+}
+.hero-tag::before { content: ''; width: 2.5rem; height: 1px; background: var(--red); }
+
+.hero-h1 {
+  position: relative; z-index: 2;
+  font-family: var(--serif); font-weight: 700;
+  font-size: clamp(2.8rem, 5.8vw, 5.5rem);
+  line-height: 1.06; max-width: 14ch;
+  color: var(--white);
+  text-shadow: 0 2px 40px rgba(0,0,0,0.7);
+  opacity: 0; animation: up 1s ease 0.48s forwards;
+}
+.hero-h1 em { font-style: italic; color: #ff4444; }
+
+.hero-sub {
+  position: relative; z-index: 2;
+  margin-top: 1.8rem; font-size: 1.05rem; line-height: 1.85; font-weight: 300;
+  color: rgba(255,255,255,0.88); max-width: 52ch;
+  text-shadow: 0 1px 16px rgba(0,0,0,0.9);
+  opacity: 0; animation: up 1s ease 0.7s forwards;
+}
+
+.hero-actions {
+  position: relative; z-index: 2;
+  display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap;
+  margin-top: 2.8rem;
+  opacity: 0; animation: up 1s ease 0.9s forwards;
+}
+
+.btn-red {
+  display: inline-block; text-decoration: none;
+  background: var(--red); color: #fff;
+  font-family: var(--sans); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 1rem 2.4rem; border: none; cursor: pointer;
+  transition: background 0.25s;
+}
+.btn-red:hover { background: var(--red-hot); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  text-decoration: none; color: rgba(255,255,255,0.82);
+  font-size: 0.72rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase;
+  transition: color 0.22s;
+}
+.btn-ghost:hover { color: #fff; }
+.arr { display: inline-block; transition: transform 0.22s; }
+.btn-ghost:hover .arr { transform: translateX(5px); }
+
+.scroll-hint {
+  position: absolute; bottom: 2.5rem; right: 5vw; z-index: 2;
+  font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); writing-mode: vertical-rl;
+  display: flex; align-items: center; gap: 0.8rem;
+  animation: up 1s ease 1.3s both;
+}
+.scroll-hint::before {
+  content: ''; width: 1px; height: 3.5rem;
+  background: linear-gradient(to bottom, var(--red), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+@keyframes up { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+
+/* ════════════════════════════════════════
+   COMMON SECTION STYLES
+════════════════════════════════════════ */
+section { padding: 7rem 6vw; }
+.inner { max-width: 1180px; }
+
+.label {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  font-size: 0.62rem; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 1.2rem;
+}
+.label::before { content: ''; width: 1.8rem; height: 1px; background: var(--red); }
+
+h2 {
+  font-family: var(--serif); font-weight: 700;
+  font-size: clamp(2rem, 3.8vw, 3.1rem); line-height: 1.12;
+  margin-bottom: 1.5rem; color: var(--white);
+}
+h2 em { font-style: italic; color: #ff4444; }
+
+.lead {
+  font-size: 1.05rem; color: var(--grey); line-height: 1.85;
+  max-width: 60ch; margin-bottom: 1.1rem; font-weight: 300;
+}
+.body-text {
+  font-size: 0.9rem; color: var(--muted); line-height: 1.85;
+  max-width: 60ch; margin-bottom: 0.9rem;
+}
+
+/* Section separator lines */
+.sep {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right, transparent, var(--border), transparent);
+}
+.sep-red {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(192,22,26,0.5), transparent);
+}
+
+/* ════════════════════════════════════════
+   O NAS
+════════════════════════════════════════ */
+#onas { background: var(--deep); }
+.onas-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6vw;
+  align-items: center;
+}
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+.tag {
+  font-size: 0.67rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+  border: 1px solid var(--border); color: var(--muted); padding: 0.4rem 1rem;
+  transition: all 0.22s;
+}
+.tag:hover { border-color: var(--red); color: var(--red); }
+
+.quote-box {
+  background: var(--card); border-left: 3px solid var(--red);
+  padding: 3rem 2.6rem; position: relative;
+}
+.quote-box::before {
+  content: '\201C'; font-family: var(--serif); font-size: 9rem; line-height: 0.5;
+  color: var(--red); opacity: 0.1;
+  position: absolute; top: 2rem; left: 1.5rem; pointer-events: none;
+}
+.quote-box blockquote {
+  font-family: var(--serif); font-style: italic; font-size: 1.35rem;
+  font-weight: 400; line-height: 1.65; color: var(--white); position: relative; z-index: 1;
+}
+
+/* ════════════════════════════════════════
+   STATS / FIRE
+════════════════════════════════════════ */
+#stats { background: var(--black); padding: 6rem 6vw; }
+
+.stats-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; margin-top: 3rem;
+}
+
+.stat-card {
+  background: #130000;
+  border: 1px solid rgba(192,22,26,0.3);
+  padding: 0; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center;
+  min-height: 300px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.stat-card:hover { border-color: var(--red); transform: translateY(-4px); }
+
+.fire-wrap {
+  position: relative; width: 100%; flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 220px;
+}
+
+.fire-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0.85;
+}
+
+.stat-num {
+  position: relative; z-index: 2;
+  font-family: var(--serif); font-weight: 700;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  color: #fff;
+  text-shadow:
+    0 0 20px rgba(255,80,0,0.9),
+    0 0 40px rgba(255,120,0,0.6),
+    0 0 80px rgba(200,20,0,0.4);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  position: relative; z-index: 2;
+  width: 100%; padding: 1.2rem 1.5rem 1.5rem;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  text-align: center;
+  border-top: 1px solid rgba(192,22,26,0.3);
+  background: rgba(10,0,0,0.6);
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 700px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-card { min-height: 220px; }
+}
+
+/* ════════════════════════════════════════
+   REALIZACJE
+════════════════════════════════════════ */
+#realizacje { background: var(--black); }
+
+.cards-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+  margin-top: 3.5rem;
+}
+.card {
+  background: var(--black); padding: 2.5rem;
+  position: relative; overflow: hidden; transition: background 0.25s;
+}
+.card:hover { background: var(--card); }
+.card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--red); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.card:hover::after { transform: scaleX(1); }
+.card-icon { font-size: 1.9rem; margin-bottom: 1.1rem; display: block; }
+.card h4 {
+  font-family: var(--serif); font-size: 1.15rem; font-weight: 700;
+  color: var(--white); margin-bottom: 0.65rem;
+}
+.card p { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.75; }
+
+/* ════════════════════════════════════════
+   ELASTYCZNOŚĆ
+════════════════════════════════════════ */
+#elastycznosc { background: var(--deep); }
+.elast-grid {
+  display: grid; grid-template-columns: 1fr 1.25fr; gap: 7vw; align-items: start;
+}
+.steps { margin-top: 2.5rem; }
+.step {
+  display: flex; gap: 1.5rem; padding: 1.7rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08); transition: border-color 0.22s;
+}
+.step:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+.step:hover { border-color: var(--border-r); }
+.step-num {
+  font-family: var(--serif); font-size: 2.1rem; font-weight: 400;
+  color: var(--red); line-height: 1; min-width: 2.2rem;
+}
+.step-body h5 {
+  font-family: var(--serif); font-size: 1.05rem; font-weight: 700;
+  color: var(--white); margin-bottom: 0.35rem;
+}
+.step-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.75; }
+
+.box {
+  background: var(--card); border: 1px solid var(--border-r);
+  padding: 3.5rem; position: relative;
+}
+.box::before {
+  content: ''; position: absolute;
+  top: -1px; left: 3rem; right: 3rem; height: 2px; background: var(--red);
+}
+.box h3 {
+  font-family: var(--serif); font-size: 1.65rem; font-weight: 700;
+  line-height: 1.22; color: var(--white); margin-bottom: 1.2rem;
+}
+.box .btn-red { margin-top: 1.4rem; display: inline-block; }
+
+/* ════════════════════════════════════════
+   KONTAKT
+════════════════════════════════════════ */
+#kontakt {
+  background: var(--black); position: relative; overflow: hidden;
+}
+#kontakt::before {
+  content: ''; position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(192,22,26,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+.kontakt-grid {
+  display: grid; grid-template-columns: 1fr 1.3fr; gap: 7vw;
+  align-items: start; position: relative; z-index: 1;
+}
+.phone-block {
+  margin-top: 3rem; padding-top: 2.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.phone-block p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.8rem; }
+.phone-link {
+  font-family: var(--serif); font-size: 2.2rem; font-weight: 400;
+  color: var(--red); text-decoration: none; letter-spacing: 0.02em;
+  display: block; transition: color 0.22s;
+}
+.phone-link:hover { color: var(--red-hot); }
+
+/* Form */
+.form { display: flex; flex-direction: column; gap: 1px; }
+.field { position: relative; }
+.field input, .field textarea {
+  width: 100%; background: #161616; border: none; outline: none;
+  color: var(--white); font-family: var(--sans); font-weight: 300;
+  font-size: 0.92rem; padding: 1.35rem 1.5rem; transition: background 0.22s;
+}
+.field input::placeholder, .field textarea::placeholder {
+  color: rgba(255,255,255,0.28); font-size: 0.74rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.field input:focus, .field textarea:focus { background: #1f1010; }
+.field textarea { min-height: 130px; resize: vertical; }
+.field-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: var(--red); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.36s ease;
+}
+.field:focus-within .field-bar { transform: scaleX(1); }
+.form-submit .btn-red { width: 100%; text-align: center; margin-top: 0.5rem; }
+.form-note { margin-top: 1.2rem; font-size: 0.73rem; color: rgba(255,255,255,0.28); line-height: 1.7; }
+
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+footer {
+  padding: 2.5rem 6vw; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;
+}
+footer img { height: 40px; width: auto; opacity: 0.7; }
+.footer-copy { font-size: 0.66rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.2); text-transform: uppercase; }
+
+/* ════════════════════════════════════════
+   REVEAL ANIMATION
+════════════════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .onas-grid, .elast-grid, .kontakt-grid { grid-template-columns: 1fr; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .quote-box { margin-top: 2rem; }
+  .box { padding: 2.5rem 2rem; }
+  section { padding: 5rem 5vw; }
+  .hero-h1 { font-size: clamp(2.4rem, 9vw, 3.5rem); }
+}
+</style>
+</head>
+<body>
+
+<!-- ════ NAV ════ -->
+<nav id="nav">
+  <a href="#" class="logo">
+    <img src="ArtysciUliczniKrakowaLogoOPT.png" alt="Artyści Uliczni Krakowa">
+  </a>
+  <a href="#kontakt" class="nav-btn">Zapytaj o wycenę</a>
+</nav>
+
+<!-- ════ HERO ════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <p class="hero-tag">Spektakle · Teatr Uliczny · Pokazy Ognia</p>
+
+  <h1 class="hero-h1">
+    My nie tworzymy produktu.<br>
+    My tworzymy <em>przeżycie</em>,<br>
+    które zostaje z Tobą.
+  </h1>
+
+  <p class="hero-sub">
+    Artyści uliczni na eventy, festiwale i wydarzenia specjalne. Tworzymy spektakle uliczne,
+    pokazy ognia, happeningi i widowiska plenerowe dla miast, firm oraz organizatorów wydarzeń
+    na terenie całej Polski.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#kontakt" class="btn-red">Porozmawiajmy o Twoim wydarzeniu</a>
+    <a href="#realizacje" class="btn-ghost">Zobacz co robimy <span class="arr">→</span></a>
+  </div>
+
+  <div class="scroll-hint">Przewiń</div>
+</section>
+
+<div class="sep-red"></div>
+
+<!-- ════ O NAS ════ -->
+<section id="onas">
+  <div class="inner">
+    <div class="onas-grid">
+      <div>
+        <p class="label">O nas</p>
+        <h2>Coś więcej niż <em>atrakcja</em></h2>
+        <p class="lead">Jeśli szukasz czegoś więcej niż atrakcji na wydarzenie — jesteś we właściwym miejscu.</p>
+        <p class="body-text">Nasze spektakle łączą teatr uliczny, sztukę performatywną, widowisko plenerowe i interakcję z publicznością. Każde wydarzenie traktujemy jak osobną historię.</p>
+        <p class="body-text">Tworzymy emocje, które zostają z widzami jeszcze długo po zakończeniu spektaklu.</p>
+        <div class="tag-row">
+          <span class="tag">Teatr uliczny</span>
+          <span class="tag">Sztuka performatywna</span>
+          <span class="tag">Widowisko plenerowe</span>
+          <span class="tag">Interakcja z publicznością</span>
+        </div>
+      </div>
+      <div class="quote-box reveal">
+        <blockquote>
+          Każde wydarzenie traktujemy jak osobną historię — unikalną, niepowtarzalną i głęboko ludzką.
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ STATS ════ -->
+<section id="stats">
+  <div class="inner">
+    <p class="label">Dlaczego warto nam zaufać?</p>
+    <div class="stats-grid">
+
+      <div class="stat-card reveal">
+        <div class="fire-wrap">
+          <canvas class="fire-canvas" data-index="0"></canvas>
+          <span class="stat-num" data-target="20" data-suffix="">0</span>
+        </div>
+        <p class="stat-label">Lat doświadczenia</p>
+      </div>
+
+      <div class="stat-card reveal">
+        <div class="fire-wrap">
+          <canvas class="fire-canvas" data-index="1"></canvas>
+          <span class="stat-num" data-target="462" data-suffix="+">0</span>
+        </div>
+        <p class="stat-label">Zrealizowanych oryginalnych imprez</p>
+      </div>
+
+      <div class="stat-card reveal">
+        <div class="fire-wrap">
+          <canvas class="fire-canvas" data-index="2"></canvas>
+          <span class="stat-num" data-target="1" data-suffix="">0</span>
+        </div>
+        <p class="stat-label">Ogromny chaos — zawsze pod kontrolą</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ════ REALIZACJE ════ -->
+<section id="realizacje">
+  <div class="inner">
+    <p class="label">Nasze realizacje</p>
+    <h2>Artyści uliczni na eventy i <em>festiwale</em></h2>
+    <p class="lead" style="max-width:66ch;">Artyści uliczni to wyjątkowa forma atrakcji podczas wydarzeń plenerowych, festiwali miejskich, imprez firmowych oraz eventów specjalnych. Działamy na terenie całej Polski.</p>
+
+    <div class="cards-grid">
+      <div class="card reveal"><span class="card-icon">🎭</span><h4>Spektakle uliczne</h4><p>Profesjonalne widowiska dla szerokiej publiczności, łączące narrację z wizualnym spektaklem i żywą interakcją.</p></div>
+      <div class="card reveal"><span class="card-icon">🔥</span><h4>Pokazy ognia</h4><p>Efektowne i bezpieczne pokazy ognia — idealne na wieczorne imprezy plenerowe i prestiżowe eventy firmowe.</p></div>
+      <div class="card reveal"><span class="card-icon">🌆</span><h4>Happeningi miejskie</h4><p>Nieoczekiwane, interaktywne działania artystyczne angażujące przestrzeń publiczną i jej mieszkańców.</p></div>
+      <div class="card reveal"><span class="card-icon">🎪</span><h4>Parady i animacje</h4><p>Ruchome widowiska i parady artystyczne, które ożywiają każde miejsce i każde wydarzenie plenerowe.</p></div>
+      <div class="card reveal"><span class="card-icon">✨</span><h4>Spektakle tematyczne</h4><p>Dedykowane realizacje dopasowane fabularnie do charakteru i identyfikacji Twojego eventu.</p></div>
+      <div class="card reveal"><span class="card-icon">🏙️</span><h4>Widowiska plenerowe</h4><p>Rozbudowane produkcje na otwartej przestrzeni — dla festiwali, miast i eventów korporacyjnych.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ════ ELASTYCZNOŚĆ ════ -->
+<section id="elastycznosc">
+  <div class="inner">
+    <div class="elast-grid">
+      <div>
+        <p class="label">Elastyczność</p>
+        <h2>Dopasowane do Twoich <em>potrzeb</em></h2>
+        <p class="lead">Każde wydarzenie jest inne — dlatego nasze realizacje są elastyczne i tworzone z myślą o konkretnym projekcie.</p>
+        <div class="steps">
+          <div class="step reveal">
+            <span class="step-num">01</span>
+            <div class="step-body"><h5>Przestrzeń wydarzenia</h5><p>Dostosowujemy scenografię i choreografię — od kameralnych dziedzińców po wielkie place.</p></div>
+          </div>
+          <div class="step reveal">
+            <span class="step-num">02</span>
+            <div class="step-body"><h5>Liczba uczestników</h5><p>Od spektakli dla kilkudziesięciu gości po widowiska dla tysięcy widzów.</p></div>
+          </div>
+          <div class="step reveal">
+            <span class="step-num">03</span>
+            <div class="step-body"><h5>Charakter imprezy</h5><p>Festiwal, event korporacyjny, inauguracja miejska — każdy charakter ma swój język artystyczny.</p></div>
+          </div>
+          <div class="step reveal">
+            <span class="step-num">04</span>
+            <div class="step-body"><h5>Budżet organizatora</h5><p>Transparentna wycena i warianty produkcji dopasowane do możliwości finansowych projektu.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="box reveal">
+        <h3>Możemy stworzyć wydarzenie dopasowane do Twoich potrzeb</h3>
+        <p class="lead">Zarówno kameralny spektakl, jak i pełne widowisko plenerowe. Każda realizacja to odrębna produkcja tworzona od zera.</p>
+        <p class="body-text">Skontaktuj się z nami, a wspólnie zaplanujemy coś naprawdę wyjątkowego — dopasowanego do miejsca, publiczności i atmosfery Twojego wydarzenia.</p>
+        <a href="#kontakt" class="btn-red">Zaplanuj wydarzenie →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep-red"></div>
+
+<!-- ════ KONTAKT ════ -->
+<section id="kontakt">
+  <div class="inner">
+    <div class="kontakt-grid">
+      <div>
+        <p class="label">Kontakt</p>
+        <h2>Porozmawiajmy o Twoim <em>wydarzeniu</em></h2>
+        <p class="lead">Jeśli planujesz wydarzenie i szukasz czegoś naprawdę wyjątkowego — zostaw swoje dane.</p>
+        <p class="body-text">Z przyjemnością przygotujemy dla Ciebie propozycję spektaklu lub całego wydarzenia.</p>
+        <div class="phone-block">
+          <p>Wolisz porozmawiać? Chętnie doradzimy, jakie rozwiązanie sprawdzi się podczas Twojego wydarzenia.</p>
+          <a href="tel:602328299" class="phone-link">📞 602 328 299</a>
+        </div>
+      </div>
+      <div>
+        <form class="form" onsubmit="handleSubmit(event)">
+          <div class="field"><input type="text" placeholder="Imię i nazwisko" required><div class="field-bar"></div></div>
+          <div class="field"><input type="email" placeholder="Adres e-mail" required><div class="field-bar"></div></div>
+          <div class="field"><input type="tel" placeholder="Numer telefonu"><div class="field-bar"></div></div>
+          <div class="field"><textarea placeholder="Krótki opis wydarzenia — data, miejsce, charakter..."></textarea><div class="field-bar"></div></div>
+          <div class="form-submit"><button type="submit" class="btn-red">Wyślij zapytanie</button></div>
+        </form>
+        <p class="form-note">Odpowiadamy w ciągu 24 godzin. Zostaw swoje dane, a wspólnie zaplanujemy wydarzenie dopasowane do Twoich potrzeb.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <img src="ArtysciUliczniKrakowaLogoOPT.png" alt="Artyści Uliczni Krakowa">
+  <span class="footer-copy">© 2025 · Spektakle uliczne i pokazy ognia · Cała Polska</span>
+</footer>
+
+<script>
+// Sticky nav
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }});
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Staggered card reveal
+document.querySelectorAll('.card.reveal').forEach((el, i) => {
+  el.style.transitionDelay = `${i * 80}ms`;
+});
+
+// Form submit
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  btn.textContent = '✓ Wiadomość wysłana!';
+  btn.style.background = '#1a6630';
+  setTimeout(() => { btn.textContent = 'Wyślij zapytanie'; btn.style.background = ''; e.target.reset(); }, 3000);
+}
+
+// ══════════════════════════════════════
+// FIRE CANVAS ANIMATION
+// ══════════════════════════════════════
+class FireCanvas {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.running = false;
+    this.init();
+  }
+  init() {
+    const r = this.canvas.getBoundingClientRect();
+    this.w = this.canvas.width  = Math.max(r.width,  10);
+    this.h = this.canvas.height = Math.max(r.height, 10);
+    this.cols = Math.ceil(this.w / 3);
+    this.rows = Math.ceil(this.h / 3);
+    this.buf  = new Float32Array(this.cols * (this.rows + 3));
+    this.palette = this.buildPalette();
+  }
+  buildPalette() {
+    const p = new Uint8Array(256 * 3);
+    for (let i = 0; i < 256; i++) {
+      let r, g, b;
+      if      (i < 85)  { r = i * 3;         g = 0;               b = 0; }
+      else if (i < 170) { r = 255;            g = (i - 85) * 3;   b = 0; }
+      else               { r = 255;            g = 255;             b = (i - 170) * 3; }
+      p[i*3]=r; p[i*3+1]=g; p[i*3+2]=b;
+    }
+    return p;
+  }
+  step() {
+    const { cols, rows, buf } = this;
+    for (let x = 0; x < cols; x++) {
+      const v = Math.random() < 0.6 ? Math.random() * 255 : 0;
+      buf[(rows+1)*cols + x] = v;
+      buf[(rows+2)*cols + x] = v;
+    }
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const l = (x - 1 + cols) % cols;
+        const ri = (x + 1) % cols;
+        const v = (buf[(y+1)*cols+l] + buf[(y+1)*cols+x] + buf[(y+1)*cols+ri] + buf[(y+2)*cols+x]) / 4.06;
+        buf[y*cols+x] = v < 0 ? 0 : v;
+      }
+    }
+  }
+  draw() {
+    const { ctx, cols, rows, buf, w, h, palette } = this;
+    const cw = w / cols, ch = h / rows;
+    const img = ctx.createImageData(w, h);
+    const d = img.data;
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const v = Math.min(255, Math.floor(buf[y*cols+x]));
+        const r = palette[v*3], g = palette[v*3+1], b = palette[v*3+2];
+        const a = v < 6 ? 0 : Math.min(255, v + 100);
+        const x0 = Math.floor(x*cw), y0 = Math.floor(y*ch);
+        const x1 = Math.floor((x+1)*cw), y1 = Math.floor((y+1)*ch);
+        for (let py = y0; py < y1 && py < h; py++) {
+          for (let px = x0; px < x1 && px < w; px++) {
+            const i = (py*w+px)*4;
+            d[i]=r; d[i+1]=g; d[i+2]=b; d[i+3]=a;
+          }
+        }
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+  start() {
+    if (this.running) return;
+    this.running = true;
+    const loop = () => { if (!this.running) return; this.step(); this.draw(); requestAnimationFrame(loop); };
+    loop();
+  }
+  stop() { this.running = false; }
+}
+
+// Initialise after layout is ready
+const fires = [];
+window.addEventListener('load', () => {
+  document.querySelectorAll('.fire-canvas').forEach(c => fires.push(new FireCanvas(c)));
+  window.addEventListener('resize', () => fires.forEach(f => f.init()));
+
+  // Start/stop based on visibility
+  const statsSection = document.getElementById('stats');
+  if (!statsSection) return;
+
+  new IntersectionObserver(entries => {
+    entries.forEach(e => fires.forEach(f => e.isIntersecting ? f.start() : f.stop()));
+  }, { threshold: 0.05 }).observe(statsSection);
+
+  // Counter animation
+  let counted = false;
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !counted) {
+        counted = true;
+        document.querySelectorAll('.stat-num').forEach(el => {
+          const target = parseFloat(el.dataset.target);
+          const suffix = el.dataset.suffix || '';
+          const dur = 2200;
+          const start = performance.now();
+          const tick = now => {
+            const t = Math.min((now - start) / dur, 1);
+            const ease = 1 - Math.pow(1 - t, 3);
+            el.textContent = Math.floor(ease * target) + suffix;
+            if (t < 1) requestAnimationFrame(tick);
+            else el.textContent = target + suffix;
+          };
+          requestAnimationFrame(tick);
+        });
+      }
+    });
+  }, { threshold: 0.3 }).observe(statsSection);
+});
+
+</script>
+</body>
+</html>
