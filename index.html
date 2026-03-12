@@ -43,7 +43,7 @@ body {
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300;
   display: flex; justify-content: space-between; align-items: center;
-  padding: 0.9rem 5vw;
+  padding: 1rem 5vw;
   transition: background 0.3s, border-color 0.3s;
 }
 nav.scrolled {
@@ -55,9 +55,14 @@ nav.scrolled {
 /* Logo — uses the actual PNG file */
 .logo { display: flex; align-items: center; text-decoration: none; }
 .logo img {
-  height: 54px; width: auto;
-  /* Make white logo visible on dark bg — logo has white text already */
-  filter: brightness(1.1);
+  height: 58px; width: auto;
+  filter: brightness(0) invert(1); /* force white */
+}
+
+/* Nav right side: button stacked above logo */
+.nav-right {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 0.6rem;
 }
 
 .nav-btn {
@@ -67,6 +72,15 @@ nav.scrolled {
   transition: all 0.25s;
 }
 .nav-btn:hover { background: var(--red); border-color: var(--red); }
+
+.nav-logo-small {
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.nav-logo-small img {
+  height: 36px; width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.55;
+}
 
 /* ════════════════════════════════════════
    HERO
@@ -84,23 +98,19 @@ nav.scrolled {
   background: url('preview.webp') center 28% / cover no-repeat;
   background-color: #1a0505; /* fallback */
 }
-/* Layered overlay for readability — dark left side, subtle red top-left glow */
+/* Left side dark for text, right side shows photo with subtle red glow */
 .hero-bg::after {
   content: ''; position: absolute; inset: 0;
   background:
-    linear-gradient(to right,  rgba(5,5,5,0.93) 0%, rgba(5,5,5,0.6) 50%, rgba(5,5,5,0.5) 100%),
-    linear-gradient(to top,    rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.3) 55%, transparent 100%),
-    linear-gradient(135deg,    rgba(140,8,8,0.22) 0%, transparent 40%);
+    linear-gradient(to right,
+      rgba(5,5,5,0.97) 0%,
+      rgba(5,5,5,0.88) 35%,
+      rgba(5,5,5,0.45) 60%,
+      rgba(5,5,5,0.15) 100%
+    ),
+    linear-gradient(to top, rgba(5,5,5,0.92) 0%, transparent 40%),
+    linear-gradient(135deg, rgba(140,8,8,0.18) 0%, transparent 35%);
 }
-
-.hero-tag {
-  position: relative; z-index: 2;
-  display: inline-flex; align-items: center; gap: 1rem;
-  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--red); margin-bottom: 1.6rem;
-  opacity: 0; animation: up 0.9s ease 0.3s forwards;
-}
-.hero-tag::before { content: ''; width: 2.5rem; height: 1px; background: var(--red); }
 
 .hero-h1 {
   position: relative; z-index: 2;
@@ -109,7 +119,7 @@ nav.scrolled {
   line-height: 1.06; max-width: 14ch;
   color: var(--white);
   text-shadow: 0 2px 40px rgba(0,0,0,0.7);
-  opacity: 0; animation: up 1s ease 0.48s forwards;
+  opacity: 0; animation: up 1s ease 0.3s forwards;
 }
 .hero-h1 em { font-style: italic; color: #ff4444; }
 
@@ -118,14 +128,23 @@ nav.scrolled {
   margin-top: 1.8rem; font-size: 1.05rem; line-height: 1.85; font-weight: 300;
   color: rgba(255,255,255,0.88); max-width: 52ch;
   text-shadow: 0 1px 16px rgba(0,0,0,0.9);
-  opacity: 0; animation: up 1s ease 0.7s forwards;
+  opacity: 0; animation: up 1s ease 0.55s forwards;
 }
 
 .hero-actions {
   position: relative; z-index: 2;
   display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap;
   margin-top: 2.8rem;
-  opacity: 0; animation: up 1s ease 0.9s forwards;
+  opacity: 0; animation: up 1s ease 0.75s forwards;
+}
+
+/* Right-side vertical red accent line */
+#hero::after {
+  content: ''; position: absolute;
+  right: 5vw; top: 15%; bottom: 15%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(192,22,26,0.6), transparent);
+  z-index: 2;
 }
 
 .btn-red {
@@ -417,7 +436,7 @@ footer {
   padding: 2.5rem 6vw; border-top: 1px solid var(--border);
   display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;
 }
-footer img { height: 40px; width: auto; opacity: 0.7; }
+footer img { height: 44px; width: auto; filter: brightness(0) invert(1); opacity: 0.6; }
 .footer-copy { font-size: 0.66rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.2); text-transform: uppercase; }
 
 /* ════════════════════════════════════════
@@ -447,16 +466,16 @@ footer img { height: 40px; width: auto; opacity: 0.7; }
 <!-- ════ NAV ════ -->
 <nav id="nav">
   <a href="#" class="logo">
-    <img src="Artysci-Uliczni-Krakowa-Logo-OPT.png" alt="Artyści Uliczni Krakowa">
+    <img src="ArtysciUliczniKrakowaLogoOPT.png" alt="Artyści Uliczni Krakowa">
   </a>
-  <a href="#kontakt" class="nav-btn">Zapytaj o wycenę</a>
+  <div class="nav-right">
+    <a href="#kontakt" class="nav-btn">Zapytaj o wycenę</a>
+  </div>
 </nav>
 
 <!-- ════ HERO ════ -->
 <section id="hero">
   <div class="hero-bg"></div>
-
-  <p class="hero-tag">Spektakle · Teatr Uliczny · Pokazy Ognia</p>
 
   <h1 class="hero-h1">
     My nie tworzymy produktu.<br>
